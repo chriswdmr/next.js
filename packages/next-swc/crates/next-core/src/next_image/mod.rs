@@ -11,6 +11,9 @@ use turbo_binding::turbopack::{
 };
 use turbo_tasks::{primitives::StringVc, Value};
 
+pub(crate) mod module;
+pub(crate) mod source;
+
 /// Serves, resizes, optimizes, and re-encodes images to be used with
 /// next/image.
 #[turbo_tasks::value(shared)]
@@ -59,7 +62,7 @@ impl ContentSource for NextImageContentSource {
             Some(query) => query,
         };
 
-        let url = match query.get("url") {
+        let url: &String = match query.get("url") {
             Some(QueryValue::String(s)) => s,
             _ => return Ok(ContentSourceResultVc::not_found()),
         };
